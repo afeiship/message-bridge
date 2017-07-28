@@ -22,6 +22,7 @@ export default class WebViewBridgeExample extends Component {
   state = {
     localData: null
   };
+
   _onNavigationStateChange = e => {
     const { url } = e;
     const bridgeData = decodeURIComponent(url).slice(9);
@@ -51,7 +52,7 @@ export default class WebViewBridgeExample extends Component {
   };
 
   _nativePresse = e => {
-    const { webview} = this.refs;
+    const { webview } = this.refs;
     webview.injectJavaScript('window.h5Method()')
   };
 
