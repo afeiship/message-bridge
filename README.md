@@ -26,9 +26,24 @@ const { webview } = this.refs;
 webview.injectJavaScript('window.h5Method()')
 ```
 
+## set query data:
+```js
+_onLoadStart = e => {
+const { webview } = this.refs;
+const webviewParams = {
+    user_id:1234,
+    data:1234,
+    otherData:['123','23']
+};
+webview.injectJavaScript('window.initialParams('+JSON.stringify(webviewParams)+')')
+//OR directly set parmas for windows:
+// webview.injectJavaScript(`window.__PARAMS__ =${JSON.stringify(webviewParams)}`);
+}
+```
+
 ## resources:
 + https://facebook.github.io/react-native/releases/next/docs/webview.html
 
 ## demo:
-<img src="2017-07-28-15-19-47.png" width="375">
+<img src="2017-07-28-15-58-01.png" width="375">
 

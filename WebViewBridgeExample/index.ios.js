@@ -53,9 +53,19 @@ export default class WebViewBridgeExample extends Component {
 
   _nativePresse = e => {
     const { webview } = this.refs;
-    webview.injectJavaScript('window.h5Method()')
+    webview.injectJavaScript('window.h5Method()');
   };
 
+
+  _onLoadStart = e => {
+    const { webview } = this.refs;
+    const webviewParams = {
+      user_id:1234,
+      data:1234,
+      otherData:['123','23']
+    };
+    webview.injectJavaScript('window.initialParams('+JSON.stringify(webviewParams)+')')
+  }
 
   render() {
     return (
@@ -67,6 +77,7 @@ export default class WebViewBridgeExample extends Component {
           style={{
             backgroundColor:"#eee",
           }}
+          onLoadStart={this._onLoadStart}
           onMessage ={ this._onMessage}
           onNavigationStateChange = { this._onNavigationStateChange}
           source={{ uri: `${ROOT}/src/assets/html/test1.html`}}>
