@@ -27,6 +27,7 @@ webview.injectJavaScript('window.h5Method()')
 ```
 
 ## resources:
++ https://facebook.github.io/react-native/releases/next/docs/webview.html
 
 ## demo:
 <img src="2017-07-28-15-19-47.png" width="375">
