@@ -1,47 +1,36 @@
-# rn-module-webview-bridge
-> Rn module webview bridge.
+# message-bridge
+> Web/h5/mp bridge for web/mp.
 
-## h5 call native:
-```js
-function callNative(inData){
-  window.postMessage( JSON.stringify(inData) )
-}
+[![version][version-image]][version-url]
+[![license][license-image]][license-url]
+[![size][size-image]][size-url]
+[![download][download-image]][download-url]
 
-btn2.addEventListener('click', (e) => {
-  callNative({
-    invoke:'do',
-    name:'msg',
-    data:{
-      content:'message from h5 by postMessage method btn2.'
-    }
-  });
-});
-
+## installation
+```shell
+yarn add @jswork/message-bridge
 ```
 
-
-## native call h5:
+## usage
 ```js
-const { webview } = this.refs;
-webview.injectJavaScript('window.h5Method()')
+import messageBridge from '@jswork/message-bridge';
+
+messageBridge(1024);
+
+// [1000, 0, 20, 4]
 ```
 
-## set query data:
-```js
-_onLoadStart = e => {
-  const { webview } = this.refs;
-  const webviewParams = {
-      user_id:1234,
-      data:1234,
-      otherData:['123','23']
-  };
-  webview.injectJavaScript(`window.__PARAMS__ =${JSON.stringify(webviewParams)}`);
-}
-```
+## license
+Code released under [the MIT license](https://github.com/afeiship/message-bridge/blob/master/LICENSE.txt).
 
-## resources:
-+ https://facebook.github.io/react-native/releases/next/docs/webview.html
+[version-image]: https://img.shields.io/npm/v/@jswork/message-bridge
+[version-url]: https://npmjs.org/package/@jswork/message-bridge
 
-## demo:
-<img src="2017-07-28-15-58-01.png" width="375">
+[license-image]: https://img.shields.io/npm/l/@jswork/message-bridge
+[license-url]: https://github.com/afeiship/message-bridge/blob/master/LICENSE.txt
 
+[size-image]: https://img.shields.io/bundlephobia/minzip/@jswork/message-bridge
+[size-url]: https://github.com/afeiship/message-bridge/blob/master/dist/message-bridge.min.js
+
+[download-image]: https://img.shields.io/npm/dm/@jswork/message-bridge
+[download-url]: https://www.npmjs.com/package/@jswork/message-bridge
