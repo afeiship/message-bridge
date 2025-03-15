@@ -48,7 +48,7 @@ const registerHandler = (
     const { name, payload } = event.data;
     if (name === inName) {
       const data = Encoder.decode(payload);
-      inHandler(data, (response) => {
+      inHandler({ name: inName, payload: data }, (response) => {
         const responseName = `${inName}:response`;
         callHandler(responseName, response, options);
       });
