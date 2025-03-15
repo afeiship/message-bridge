@@ -31,7 +31,7 @@ class Encoder {
 const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptions = {}) => {
   const payload = Encoder.encode(inPayload);
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
-  const options = { ...inOptions, context: defaultContext };
+  const options = { context: defaultContext, ...inOptions };
   options.context.postMessage({ name: inName, payload });
 };
 
@@ -41,7 +41,7 @@ const registerHandler = (
   inOptions?: CallHandlerOptions
 ): HandlerCleanup => {
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
-  const options = { ...inOptions, context: inOptions?.context || defaultContext };
+  const options = { context: inOptions?.context || defaultContext, ...inOptions };
   const messageHandler = (event: MessageEvent) => {
     const { name, payload } = event.data;
     if (name === inName) {
