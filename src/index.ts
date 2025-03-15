@@ -14,7 +14,9 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   options.context.postMessage({ name: inName, payload });
 };
 
-const registerHandler = () => {};
+const registerHandler = () => {
+  throw new Error('registerHandler is not implemented');
+};
 
 export default {
   callHandler,
