@@ -12,9 +12,24 @@ export interface HandlerCleanup {
   destroy: () => void;
 }
 
+export class Encoder {
+  public static encode = (obj: any) => {
+    if (typeof obj === 'string') return Base64.encode(obj);
+    return Base64.encode(JSON.stringify(obj));
+  };
+
+  public static decode = (str: string) => {
+    const decoded = Base64.decode(str);
+    try {
+      return JSON.parse(decoded);
+    } catch (e) {
+      return decoded;
+    }
+  };
+}
+
 const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptions = {}) => {
-  const _payload = typeof inPayload === 'string' ? inPayload : JSON.stringify(inPayload);
-  const payload = Base64.encode(_payload);
+  const payload = Encoder.encode(inPayload);
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
   const options = { ...inOptions, context: defaultContext };
   options.context.postMessage({ name: inName, payload });
@@ -31,14 +46,7 @@ const registerHandler = (
     const { name, payload } = event.data;
     if (name === inName) {
       const decodedPayload = Base64.decode(payload);
-      let data: string | null = null;
-
-      try {
-        data = JSON.parse(decodedPayload);
-      } catch (e) {
-        data = decodedPayload;
-      }
-
+      const data = Encoder.decode(decodedPayload);
       inHandler(data, (response) => {
         const responseName = `${inName}:response`;
         callHandler(responseName, response, options);

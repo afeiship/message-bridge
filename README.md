@@ -15,9 +15,17 @@ yarn add @jswork/message-bridge
 ```js
 import messageBridge from '@jswork/message-bridge';
 
-messageBridge(1024);
+// Register a handler for incoming messages
+messageBridge.registerHandler('message:in', (data, responseCallback) => {
+  console.log('Received data:', data);
+  // Send response back
+  responseCallback({ status: 'success' });
+});
 
-// [1000, 0, 20, 4]
+// Send a message and handle the response
+messageBridge.callHandler('message:out', { type: 'request', payload: 'Hello!' }, (response) => {
+  console.log('Got response:', response);
+});
 ```
 
 ## license
