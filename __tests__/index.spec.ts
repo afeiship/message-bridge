@@ -1,4 +1,5 @@
-import { Encoder } from '../src/index';
+// @ts-ignore
+import { Encoder } from '../src';
 
 describe('Encoder', () => {
   describe('encode', () => {
