@@ -12,7 +12,7 @@ export interface HandlerCleanup {
   destroy: () => void;
 }
 
-export class Encoder {
+class Encoder {
   public static encode = (obj: any) => {
     if (typeof obj === 'string') return Base64.encode(obj);
     return Base64.encode(JSON.stringify(obj));
@@ -64,7 +64,4 @@ const registerHandler = (
   };
 };
 
-export default {
-  callHandler,
-  registerHandler
-};
+export { callHandler, registerHandler, Encoder };
