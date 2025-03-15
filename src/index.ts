@@ -23,17 +23,25 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
 const registerHandler = (
   inName: string,
   inHandler: (data: any, callback: (data: any) => void) => void,
-  inOptions: CallHandlerOptions = {}
+  inOptions?: CallHandlerOptions
 ): HandlerCleanup => {
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
-  const options = { ...inOptions, context: inOptions.context || defaultContext };
+  const options = { ...inOptions, context: inOptions?.context || defaultContext };
   const messageHandler = (event: MessageEvent) => {
     const { name, payload } = event.data;
     if (name === inName) {
       const decodedPayload = Base64.decode(payload);
-      const data = typeof decodedPayload === 'string' ? JSON.parse(decodedPayload) : decodedPayload;
+      let data: string | null = null;
+
+      try {
+        data = JSON.parse(decodedPayload);
+      } catch (e) {
+        data = decodedPayload;
+      }
+
       inHandler(data, (response) => {
-        callHandler(name, response, options);
+        const responseName = `${inName}:response`;
+        callHandler(responseName, response, options);
       });
     }
   };
