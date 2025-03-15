@@ -8,6 +8,10 @@ export interface CallHandlerOptions {
   context?: IContext;
 }
 
+export interface HandlerCleanup {
+  destroy: () => void;
+}
+
 const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptions = {}) => {
   const _payload = typeof inPayload === 'string' ? inPayload : JSON.stringify(inPayload);
   const payload = Base64.encode(_payload);
@@ -16,8 +20,32 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   options.context.postMessage({ name: inName, payload });
 };
 
-const registerHandler = () => {
-  throw new Error('registerHandler is not implemented');
+const registerHandler = (
+  inName: string,
+  inHandler: (data: any, callback: (data: any) => void) => void,
+  inOptions: CallHandlerOptions = {}
+): HandlerCleanup => {
+  const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
+  const options = { ...inOptions, context: inOptions.context || defaultContext };
+  const messageHandler = (event: MessageEvent) => {
+    const { name, payload } = event.data;
+    if (name === inName) {
+      const decodedPayload = Base64.decode(payload);
+      const data = typeof decodedPayload === 'string' ? JSON.parse(decodedPayload) : decodedPayload;
+      inHandler(data, (response) => {
+        callHandler(name, response, options);
+      });
+    }
+  };
+
+  options.context.addEventListener?.('message', messageHandler);
+
+  // Return cleanup function
+  return {
+    destroy: () => {
+      options.context.removeEventListener?.('message', messageHandler);
+    }
+  };
 };
 
 export default {
