@@ -1,5 +1,7 @@
 import { Base64 } from 'js-base64';
 
+// https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html
+
 export interface IContext {
   postMessage: (message: any) => void;
 }
