@@ -1,6 +1,6 @@
 {
   "name": "@jswork/message-bridge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Web/h5/mp bridge for web/mp.",
   "type": "module",
   "npmClient": "pnpm",
