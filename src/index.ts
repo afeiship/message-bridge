@@ -6,6 +6,7 @@ export interface IContext {
 
 export interface CallHandlerOptions {
   context?: IContext;
+  targetOrigin?: string;
 }
 
 export interface HandlerCleanup {
@@ -31,8 +32,9 @@ class Encoder {
 const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptions = {}) => {
   const payload = Encoder.encode(inPayload);
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
-  const options = { targetOrigin: '*', context: defaultContext, ...inOptions };
-  options.context.postMessage({ name: inName, payload });
+  const options = { context: defaultContext, ...inOptions };
+  const targetOrigin = options.targetOrigin === '*' ? '*' : options.targetOrigin || '';
+  options.context.postMessage({ name: inName, payload }, targetOrigin);
 };
 
 const registerHandler = (
