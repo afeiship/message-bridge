@@ -1,9 +1,11 @@
 import { Base64 } from 'js-base64';
 
-interface CallHandlerOptions {
-  context?: {
-    postMessage: (message: any) => void;
-  };
+export interface IContext {
+  postMessage: (message: any) => void;
+}
+
+export interface CallHandlerOptions {
+  context?: IContext;
 }
 
 const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptions = {}) => {
