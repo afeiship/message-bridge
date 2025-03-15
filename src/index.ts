@@ -33,7 +33,7 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   const payload = Encoder.encode(inPayload);
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
   const options = { context: defaultContext, ...inOptions };
-  const targetOrigin = options.targetOrigin === '*' ? '*' : options.targetOrigin || '';
+  const targetOrigin = options.targetOrigin || '*';
   options.context.postMessage({ name: inName, payload }, targetOrigin);
 };
 
