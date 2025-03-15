@@ -47,8 +47,7 @@ const registerHandler = (
   const messageHandler = (event: MessageEvent) => {
     const { name, payload } = event.data;
     if (name === inName) {
-      const decodedPayload = Base64.decode(payload);
-      const data = Encoder.decode(decodedPayload);
+      const data = Encoder.decode(payload);
       inHandler(data, (response) => {
         const responseName = `${inName}:response`;
         callHandler(responseName, response, options);
