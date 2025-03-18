@@ -18,15 +18,15 @@ export interface HandlerCleanup {
 
 class Encoder {
   public static encode = (obj: any) => {
-    if (typeof wx !== 'undefined') return this.encodeMpData(obj);
+    const isMiniProgram =
+      typeof wx !== 'undefined' && window['__wxjs_environment'] === 'miniprogram';
+    if (isMiniProgram) return this.encodeMpData(obj);
     if (typeof obj === 'string') return Base64.encode(obj);
     return Base64.encode(JSON.stringify(obj));
   };
 
-  public static decode = (obj: any) => {
-    if (typeof obj === 'string') return obj;
-    const decoded = Base64.decode(obj);
-
+  public static decode = (str: string) => {
+    const decoded = Base64.decode(str);
     try {
       return JSON.parse(decoded);
     } catch (e) {
