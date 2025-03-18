@@ -18,6 +18,7 @@ export interface HandlerCleanup {
 
 class Encoder {
   public static encode = (obj: any) => {
+    if (typeof wx !== 'undefined') return this.encodeMpData(obj);
     if (typeof obj === 'string') return Base64.encode(obj);
     return Base64.encode(JSON.stringify(obj));
   };
@@ -46,11 +47,6 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
   const options = { context: defaultContext, ...inOptions };
   const targetOrigin = options.targetOrigin || '*';
-  if (typeof wx !== 'undefined') {
-    return options.context.postMessage({
-      data: { name: inName, payload: Encoder.encodeMpData(inPayload) }
-    });
-  }
   options.context.postMessage({ name: inName, payload }, targetOrigin);
 };
 
