@@ -1,6 +1,7 @@
 import { Base64 } from 'js-base64';
 
 // https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html
+declare const wx: any;
 
 export interface IContext {
   postMessage: (message: any) => void;
@@ -36,6 +37,14 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   const defaultContext = typeof window !== 'undefined' ? window : ({} as any);
   const options = { context: defaultContext, ...inOptions };
   const targetOrigin = options.targetOrigin || '*';
+  if (typeof wx !== 'undefined') {
+    return options.context.postMessage({
+      data: {
+        name: inName,
+        payload
+      }
+    });
+  }
   options.context.postMessage({ name: inName, payload }, targetOrigin);
 };
 
