@@ -39,10 +39,7 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   const targetOrigin = options.targetOrigin || '*';
   if (typeof wx !== 'undefined') {
     return options.context.postMessage({
-      data: {
-        name: inName,
-        payload
-      }
+      data: { name: inName, payload: inPayload }
     });
   }
   options.context.postMessage({ name: inName, payload }, targetOrigin);
