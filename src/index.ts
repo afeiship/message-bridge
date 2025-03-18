@@ -23,8 +23,10 @@ class Encoder {
     return Base64.encode(JSON.stringify(obj));
   };
 
-  public static decode = (str: string) => {
-    const decoded = Base64.decode(str);
+  public static decode = (obj: any) => {
+    if (typeof obj === 'string') return obj;
+    const decoded = Base64.decode(obj);
+
     try {
       return JSON.parse(decoded);
     } catch (e) {
