@@ -48,7 +48,8 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   const options = { context: defaultContext, ...inOptions };
   const targetOrigin = options.targetOrigin || '*';
   const data = { name: inName, payload };
-  if (typeof wx !== 'undefined') return options.context.postMessage({ data });
+  const isMiniProgram = typeof wx !== 'undefined' && window['__wxjs_environment'] === 'miniprogram';
+  if (isMiniProgram) return options.context.postMessage({ data });
   options.context.postMessage(data, targetOrigin);
 };
 
