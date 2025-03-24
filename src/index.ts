@@ -3,6 +3,14 @@ import { Base64 } from 'js-base64';
 // https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html
 declare const wx: any;
 
+// 在文件顶部添加类型声明
+declare global {
+  interface Window {
+    __wxjs_environment?: 'miniprogram' | string;
+  }
+}
+
+
 export interface IContext {
   postMessage: (message: any) => void;
 }
@@ -50,6 +58,7 @@ const callHandler = (inName: string, inPayload: any, inOptions: CallHandlerOptio
   const options = { context: defaultContext, ...inOptions };
   const targetOrigin = options.targetOrigin || '*';
   const data = { name: inName, payload };
+
   const isMiniProgram = typeof wx !== 'undefined' && window['__wxjs_environment'] === 'miniprogram';
   if (isMiniProgram) return options.context.postMessage({ data });
   options.context.postMessage(data, targetOrigin);
